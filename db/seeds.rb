@@ -25,7 +25,6 @@ categories.each do |category|
     product.save!
   end
 end
-
 # User.create(email: 'seba.nrc@gmail.com')
 
 # rangesdas = 1..20
