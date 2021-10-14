@@ -8,7 +8,9 @@
 
 Variant.delete_all
 Product.delete_all
-Category.delete_all
+Category.destroy_all
+ProductProperty.delete_all
+Property.delete_all
 Category.create(name: 'Fuentes de poder')
 Category.create(name: 'Tarjetas de video')
 Category.create(name: 'Placas madre')
@@ -25,6 +27,7 @@ categories.each do |category|
     product.save!
   end
 end
+
 # User.create(email: 'seba.nrc@gmail.com')
 
 # rangesdas = 1..20
