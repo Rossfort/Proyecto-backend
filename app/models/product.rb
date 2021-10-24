@@ -3,7 +3,6 @@ class Product < ApplicationRecord
 
   belongs_to :category
   has_many_attached :images
-  has_and_belongs_to_many :product_properties
   has_many :variants
   has_one :master, -> { where(is_master: true) }, inverse_of: :product, class_name: 'Variant'
 

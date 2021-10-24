@@ -1,6 +1,6 @@
 require "test_helper"
 
-class ProductPropertyTest < ActiveSupport::TestCase
+class VariantPropertyTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

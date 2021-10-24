@@ -17,10 +17,10 @@ class Api::Admin::VariantsController < ApplicationController
   end
 
   def edit
-    variant = Variant.find(params[:id])
+    @variant = Variant.find(params[:id])
 
-    if variant
-      render json: variant, status: :ok
+    if @variant
+      render template: 'api/admin/variants/show', status: :ok
     else
       render json: { message: 'Variante no encontrada' }, status: :not_found
     end
@@ -50,6 +50,7 @@ class Api::Admin::VariantsController < ApplicationController
   private
 
   def variant_params
-    params.require(:variant).permit(:price, :size, :stock)
+    params.require(:variant).permit(:price, :size, :stock,
+                                    product_properties_attributes: %i[value property_id])
   end
 end

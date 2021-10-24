@@ -47,6 +47,6 @@ class Api::Admin::CategoriesController < ApplicationController
   end
 
   def category_params
-    params.require(:category).permit(:name, :image)
+    params.require(:category).permit(:name, :image, properties_attributes: %i[id name _destroy])
   end
 end

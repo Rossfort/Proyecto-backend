@@ -5,6 +5,9 @@ Rails.application.routes.draw do
         resources :categories
         resources :orders
         resources :products do
+          member do
+            get :properties
+          end
           resources :variants, only: %i[index create]
         end
         resources :variants, except: %i[index create] do

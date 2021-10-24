@@ -61,6 +61,11 @@ class Api::Admin::ProductsController < ApplicationController
     end
   end
 
+  def properties
+    @product = Product.find(params[:id])
+    render json: @product.category.properties, status: :ok
+  end
+
   private
 
   def filter(products)

@@ -175,6 +175,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    sqlite3 (1.4.2)
     thor (1.1.0)
     transbank-sdk (1.5.0)
       json (~> 2.0)
@@ -207,6 +208,7 @@ DEPENDENCIES
   rubocop-rails
   ruby-enum
   spring
+  sqlite3 (~> 1.4)
   transbank-sdk
   tzinfo-data
 
