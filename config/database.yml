@@ -13,7 +13,7 @@ development:
   <<: *default
   database: coyote
   encoding: unicode
-  username: seba
+  username: mods
   password: 123
   host: localhost
   port: 5432

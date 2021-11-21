@@ -102,7 +102,6 @@ ActiveRecord::Schema.define(version: 2021_10_17_025216) do
     t.integer "position"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["property_id"], name: "index_product_properties_on_property_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -158,7 +157,6 @@ ActiveRecord::Schema.define(version: 2021_10_17_025216) do
   add_foreign_key "line_items", "variants"
   add_foreign_key "orders", "users"
   add_foreign_key "payments", "orders"
-  add_foreign_key "product_properties", "properties"
   add_foreign_key "products", "categories"
   add_foreign_key "properties", "categories"
   add_foreign_key "variant_properties", "product_properties"

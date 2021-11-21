@@ -20,10 +20,13 @@ Rails.application.routes.draw do
           get :category_properties
         end
       end
-      resources :products, only: %i[index show]
+      resources :products, only: %i[index show] do
+        get :search, on: :collection
+      end
       resources :variants, only: [:index]
       resources :orders, only: [:create]
       resources :properties
+      resources :contacts, only: [:create]
 
       post '/login', to: 'sessions#create'
       delete '/logout', to: 'sessions#destroy'
