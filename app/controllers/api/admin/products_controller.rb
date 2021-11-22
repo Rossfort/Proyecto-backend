@@ -29,7 +29,7 @@ class Api::Admin::ProductsController < ApplicationController
     product = Product.find(params[:id])
 
     images = []
-    product.images.each do |image|
+    product.images.includes([:blob]).each do |image|
       images << image_to_base64(image)
     end
 

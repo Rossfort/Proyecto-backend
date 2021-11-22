@@ -6,7 +6,7 @@ class Variant < ApplicationRecord
   has_one_attached :variant_image
   has_many :variant_properties, dependent: nil
   has_many :product_properties, through: :variant_properties
-  accepts_nested_attributes_for :product_properties, reject_if: :chech_if_exist
+  accepts_nested_attributes_for :product_properties, reject_if: :check_if_exist
 
   validates :price, presence: true
   validates :stock, presence: true
@@ -17,7 +17,7 @@ class Variant < ApplicationRecord
 
   delegate :title, to: :product
 
-  def chech_if_exist(property)
+  def check_if_exist(property)
     # reviso si existe
     new_property = ProductProperty.find_by(value: property[:value])
     return true if new_property.present? && product_properties.exists?(new_property.id)
