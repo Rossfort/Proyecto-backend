@@ -12,15 +12,11 @@
 
 ActiveRecord::Schema.define(version: 2021_12_18_225712) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "pgcrypto"
-  enable_extension "plpgsql"
-
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
-    t.bigint "record_id", null: false
-    t.bigint "blob_id", null: false
+    t.integer "record_id", null: false
+    t.integer "blob_id", null: false
     t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
@@ -39,7 +35,7 @@ ActiveRecord::Schema.define(version: 2021_12_18_225712) do
   end
 
   create_table "active_storage_variant_records", force: :cascade do |t|
-    t.bigint "blob_id", null: false
+    t.integer "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
@@ -59,38 +55,20 @@ ActiveRecord::Schema.define(version: 2021_12_18_225712) do
 
   create_table "line_items", force: :cascade do |t|
     t.integer "quantity"
-    t.bigint "order_id", null: false
-    t.bigint "variant_id", null: false
+    t.integer "order_id", null: false
+    t.integer "variant_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["order_id"], name: "index_line_items_on_order_id"
     t.index ["variant_id"], name: "index_line_items_on_variant_id"
   end
 
-  create_table "orders", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.string "name"
-    t.string "last_name"
-    t.string "address"
-    t.string "city"
-    t.string "comuna"
-    t.string "phone"
-    t.string "postal_code"
-    t.integer "status", default: 0
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "token"
-    t.integer "amount", null: false
-    t.string "pay_method"
-    t.string "shipping_method"
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
-    t.index ["user_id"], name: "index_orders_on_user_id"
-    t.index ["uuid"], name: "index_orders_on_uuid"
-  end
+# Could not dump table "orders" because of following StandardError
+#   Unknown type 'uuid' for column 'uuid'
 
   create_table "payments", force: :cascade do |t|
     t.json "payload"
-    t.bigint "order_id", null: false
+    t.integer "order_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["order_id"], name: "index_payments_on_order_id"
@@ -98,7 +76,7 @@ ActiveRecord::Schema.define(version: 2021_12_18_225712) do
 
   create_table "product_properties", force: :cascade do |t|
     t.string "value"
-    t.bigint "property_id", null: false
+    t.integer "property_id", null: false
     t.integer "position"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -109,7 +87,7 @@ ActiveRecord::Schema.define(version: 2021_12_18_225712) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "discarded_at"
-    t.bigint "category_id"
+    t.integer "category_id"
     t.text "description"
     t.integer "visit_count", default: 0
     t.index ["category_id"], name: "index_products_on_category_id"
@@ -120,7 +98,7 @@ ActiveRecord::Schema.define(version: 2021_12_18_225712) do
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "category_id"
+    t.integer "category_id"
     t.index ["category_id"], name: "index_properties_on_category_id"
   end
 
@@ -131,8 +109,8 @@ ActiveRecord::Schema.define(version: 2021_12_18_225712) do
   end
 
   create_table "variant_properties", force: :cascade do |t|
-    t.bigint "variant_id", null: false
-    t.bigint "product_property_id", null: false
+    t.integer "variant_id", null: false
+    t.integer "product_property_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["product_property_id"], name: "index_variant_properties_on_product_property_id"
@@ -144,7 +122,7 @@ ActiveRecord::Schema.define(version: 2021_12_18_225712) do
     t.string "size"
     t.integer "stock"
     t.boolean "is_master", default: false
-    t.bigint "product_id", null: false
+    t.integer "product_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.datetime "discarded_at"
