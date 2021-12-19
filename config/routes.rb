@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       end
       resources :products, only: %i[index show] do
         get :search, on: :collection
+        get :visit, on: :member
       end
       resources :variants, only: [:index]
       resources :orders, only: [:create]

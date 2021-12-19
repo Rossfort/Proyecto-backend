@@ -1,6 +1,7 @@
 json.extract! @product, :id, :title, :discarded_at
-json.master_image polymorphic_url(@product.images.first)
-json.images @product.images.map { |image| polymorphic_url(image) }
+json.master_image @product.images.first.present? ? polymorphic_url(@product.images.first) : asset_url('default_image.png')
+json.images(@product.images.map { |image| image.present? ? polymorphic_url(image) : asset_url('default_image.png') }) if @product.images.present?
+json.images [asset_url('default_image.png')] if @product.images.blank?
 json.master_price @product.master.price
 json.description @product.description
 json.variants @product.variants do |variant|

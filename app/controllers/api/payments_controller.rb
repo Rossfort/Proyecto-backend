@@ -11,14 +11,12 @@ module Api
 
       res = Transbank::Webpay::WebpayPlus::Transaction.commit(token: token_ws)
 
-      @order.payments.create(payload: res)
+      @order.create_payment(payload: res)
       @order.pagado! if res.status == 'AUTHORIZED'
       redirect_to "http://localhost:3000/transactions/#{@order.uuid}"
     end
 
-    def show
-      render json: @order
-    end
+    def show; end
 
     private
 

@@ -9,11 +9,17 @@ class Api::CategoriesController < ApplicationController
     @category = Category.find_by("lower(name) = '#{name.downcase}'")
     if params[:properties].present?
       @products = filter(params[:properties], @category)
-      @products = @products.limit(12).offset(offset)
+      @products = order_products(@products, params[:order])
+      @products = @products.where('variants.stock > 0')
+      @total_pages = (@products.length / 12.0).ceil
     else
-      @products = @category.products.kept.limit(12).offset(offset)
+      @products = @category.products.kept
+      @products = order_products(@products, params[:order])
+    @products = @products.where('variants.stock > 0')
+      @total_pages = (@products.count / 12.0).ceil
     end
-    @total_pages = (@products.length / 12.0).ceil
+    @products = @products.limit(12).offset(offset)
+    @products = @products.uniq
   end
 
   def category_properties
@@ -29,6 +35,20 @@ class Api::CategoriesController < ApplicationController
       product_properties.push(val)
     end
     p = product_properties.flatten
-    category.products.joins(variants: :product_properties).where(product_properties: { id: p }).kept.group(:id)
+    category.products.joins(variants: :product_properties).where(product_properties: { id: p }).kept.group(:id,
+                                                                                                           'variants.price')
+  end
+
+  def order_products(products, order_type)
+    p = products
+    case order_type
+    when '3'
+      p = products.joins(:variants).order(visit_count: :desc)
+    when '2'
+      p = products.joins(:variants).order('variants.price DESC')
+    when '1'
+      p = products.joins(:variants).order('variants.price ASC')
+    end
+    p
   end
 end

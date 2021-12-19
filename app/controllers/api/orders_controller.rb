@@ -18,6 +18,7 @@ module Api
 
     def transfer(order)
       if order.save
+        AfterTransactionMailer.with(email: order.user.email, order: order).order_placed.deliver_later
         render json: { order: order, type: 'transfer' }, status: :created
       else
         render json: { message: 'hubo un error al crear la order, por favor intentar mas tarde' },
@@ -27,6 +28,7 @@ module Api
 
     def webpay(order)
       order.save
+      AfterTransactionMailer.with(email: order.user.email, order: order).order_placed.deliver_later
       response = webpay_response(order.id, order.amount)
       order.token = response.token
       if order.save
@@ -69,11 +71,7 @@ module Api
     end
 
     def process_stock(line_item, quantity)
-      if quantity <= line_item.variant.stock
-        line_item.variant.update(stock: 0)
-      else
-        line_item.variant.update(stock: line_item.variant.stock - quantity)
-      end
+      line_item.variant.update(stock: line_item.variant.stock - quantity)
     end
   end
 end

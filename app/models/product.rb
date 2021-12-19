@@ -9,6 +9,7 @@ class Product < ApplicationRecord
   validates :title, presence: { message: 'El titulo no puede estar en blanco' }
   validates :title, length: { minimum: 2, message: 'El titulo no puede contener menos de 2 letras' }
 
+  delegate :price, to: :master
   scope :filter_by_title, ->(title) { where('title LIKE ?', "%#{title}%") }
 
   def properties

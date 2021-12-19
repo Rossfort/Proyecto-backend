@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
   after_create :reload_uuid
-  has_many :payments, dependent: :destroy
+  has_one :payment, dependent: :destroy
   enum status: { pendiente: 0, pagado: 1, enviado: 2, cancelado: 3, error: 4 }
   belongs_to :user
   has_many :line_items, dependent: :destroy
@@ -16,6 +16,9 @@ class Order < ApplicationRecord
   validates :name, :last_name, :address, :city, :comuna, :phone, :status, presence: true
   validates :pay_method, presence: true, inclusion: { in: PaymentMethods.values }
 
+  delegate :email, to: :user
+  after_update :send_mails
+
   def payed_mail
     @order = Order.find(id)
     OrderMailer.with(order: @order).order_payed.deliver_later
@@ -29,5 +32,12 @@ class Order < ApplicationRecord
     self[:uuid] = self.class.where(id: id).pluck(:uuid).first if attributes.key? 'uuid'
   end
 
-  delegate :email, to: :user
+  def send_mails
+    case status
+    when 'pagado'
+      AfterTransactionMailer.with(email: user.email).order_payed.deliver_later
+    when 'enviado'
+      AfterTransactionMailer.with(email: user.email).order_shipped.deliver_later
+    end
+  end
 end
